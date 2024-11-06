@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
                 pixel_array[pixel_array_index] = grayImage.at<uint8_t>(i, j);
                 pixel_array_index++;
 
-                if (j % 4 == 0)
+                if (pixel_array_index >= 4)
                 {
                     uint32_t bram_memory = pixel_array[0] << 24 | pixel_array[1] << 16 |
                                             pixel_array[2] << 8 | pixel_array[3];
@@ -76,9 +76,9 @@ int main(int argc, char* argv[])
             }
         }
 
-        cv::waitKey(100);
+        cv::waitKey(10);
 
-        uint8_t received_frame[BRAM_SIZE];
+        uint8_t received_frame[BRAM_SIZE * 4];
         int received_frame_index = 0;
 
         // read BRAM
@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
                 if (pixel != received_frame[i*32+j])
                 {
                     same_frame = false;
-                    std:: cout << "Pixel [" << i << "][" << j << "]:" << std::endl;
+                    std:: cout << "Pixel [" << i << "][" << j << "]:" << std::endl;  
                     std::cout << static_cast<int>(pixel) << " | " << static_cast<int>(received_frame[i*32+j]) << std::endl;
                     break;
                 }
@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
                 break;
         }
 
-        std::cout << same_frame << std::endl<< std::endl;
+        std::cout << "Is the image the same: " << same_frame << std::endl<< std::endl;
 
         cv::waitKey(20);
     }
