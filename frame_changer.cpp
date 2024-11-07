@@ -32,7 +32,14 @@ int main(int argc, char* argv[])
             return -1;
         }
 
-        cv::resize(orig_frame, frame,cv::Size(32, 32), cv::INTER_LINEAR);
+        int img_size = 32;
+        cv::resize(orig_frame, frame, cv::Size(img_size, img_size), cv::INTER_LINEAR);
+
+        // save image
+        cv::imwrite("frame.jpg", frame);
+        // show image in the terminal
+        system("ascii-image-converter -C frame.jpg");
+        std::cout << std::endl;
 
         // std::cout << "Frame size:\n" << frame.size() << std::endl;
 
@@ -86,8 +93,8 @@ int main(int argc, char* argv[])
         {
             uint32_t mem = reader[i];
 
-            if (mem != debug_array[i])
-                std::cout << "Reader [" << i << "]: " << mem << " | Debug: " << debug_array[i] << std::endl;
+            // if (mem != debug_array[i])
+            //     std::cout << "Reader [" << i << "]: " << mem << " | Debug: " << debug_array[i] << std::endl;
 
             // std::cout << "Memory " << mem << std::endl;
             received_frame[received_frame_index] = static_cast<uint8_t>(mem >> 24 & 0xFF);
@@ -99,19 +106,30 @@ int main(int argc, char* argv[])
 
         // std::cout << received_frame << std::endl;
 
+        // reconstruct the image
+        cv::Mat received_image = cv::Mat(grayImage.rows, grayImage.cols, CV_8UC1, received_frame);
+
+        // save image
+        cv::imwrite("thresh_frame.jpg", received_image);
+        // show image in the terminal
+        system("ascii-image-converter -C thresh_frame.jpg");
+        std::cout << std::endl;
+
+/*
         bool same_frame = true;
 
+        // check if the image is the same
         for (int i = 0; i < grayImage.rows; i++)
         {
             for (int j = 0; j < grayImage.cols; j++)
             {
                 uint8_t pixel = grayImage.at<uint8_t>(i, j);
 
-                if (pixel != received_frame[i*32+j])
+                if (pixel != received_frame[i*img_size+j])
                 {
                     same_frame = false;
                     std:: cout << "Pixel [" << i << "][" << j << "]:" << std::endl;  
-                    std::cout << static_cast<int>(pixel) << " | " << static_cast<int>(received_frame[i*32+j]) << std::endl;
+                    std::cout << static_cast<int>(pixel) << " | " << static_cast<int>(received_frame[i*img_size+j]) << std::endl;
                     break;
                 }
             }
@@ -121,8 +139,9 @@ int main(int argc, char* argv[])
         }
 
         std::cout << "Is the image the same: " << same_frame << std::endl<< std::endl;
+*/
 
-        cv::waitKey(20);
+        cv::waitKey(10);
     }
 
     cap.release();

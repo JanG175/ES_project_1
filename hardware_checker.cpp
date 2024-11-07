@@ -11,15 +11,6 @@
 
 int main(int argc, char* argv[])
 {
-    BRAM writer(WRITER_BRAM_UIO_NUMBER, BRAM_SIZE);
-    BRAM reader(READER_BRAM_UIO_NUMBER, BRAM_SIZE);
-
-    for (int i = 0; i < BRAM_SIZE; i++)
-    {
-        writer[i] = 0;
-        reader[i] = 0;
-    }
-
     // // get frame from camera
     // cv::VideoCapture cap(0);
     // if (!cap.isOpened())
@@ -41,9 +32,24 @@ int main(int argc, char* argv[])
 
     //     std::cout << "Frame size:\n" << frame.size() << std::endl;
 
+    //     // save image
+    //     cv::imwrite("frame.jpg", frame);
+
+    //     // show image in the terminal
+    //     system("ascii-image-converter -C frame.jpg");
+
     //     // cv::imshow("Frame", frame);
     //     cv::waitKey(20);
     // }
+
+    BRAM writer(WRITER_BRAM_UIO_NUMBER, BRAM_SIZE);
+    BRAM reader(READER_BRAM_UIO_NUMBER, BRAM_SIZE);
+
+    for (int i = 0; i < BRAM_SIZE; i++)
+    {
+        writer[i] = 0;
+        reader[i] = 0;
+    }
 
     // write to BRAM writer
     writer[100] = 420;
