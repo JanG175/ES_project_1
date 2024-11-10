@@ -48,12 +48,12 @@ begin
 
     bram1_dout  <=  STD_LOGIC_VECTOR(thresh_dout);
 
-    bram0_addr(31 downto 14)    <=  (30 => '1', others => '0');
-    bram0_addr(13 downto 2)     <=  STD_LOGIC_VECTOR(cnt(13 downto 2));
+    bram0_addr(31 downto 10)    <=  (30 => '1', others => '0');
+    bram0_addr(9 downto 2)      <=  STD_LOGIC_VECTOR(cnt(13 downto 2));
     bram0_addr(1 downto 0)      <=  "00";
 
-    bram1_addr(31 downto 13)    <=  (30 => '1', others => '0');
-    bram1_addr(13 downto 2)     <=  STD_LOGIC_VECTOR(cnt(13 downto 2));
+    bram1_addr(31 downto 10)    <=  (30 => '1', others => '0');
+    bram1_addr(9 downto 2)      <=  STD_LOGIC_VECTOR(cnt(13 downto 2));
     bram1_addr(1 downto 0)      <=  "00";
 
 end Behavioral;
